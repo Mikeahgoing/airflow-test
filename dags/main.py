@@ -15,6 +15,7 @@ def creator_metric_length_check():
     @task
     def check_length():
         print("Hello Airflow 3!")
+        return "Hello Airflow 3!"
 
     check_length()
 

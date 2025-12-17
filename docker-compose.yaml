@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+  airflow:
+    image: apache/airflow:3.0.6
+    container_name: airflow-local
+    ports:
+      - "8080:8080"
+    environment:
+      AIRFLOW__CORE__EXECUTOR: SequentialExecutor
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+    volumes:
+      - ./dags:/opt/airflow/dags
+    command: >
+      bash -c "
+      airflow db migrate &&
+      airflow users create
+        --username airflow
+        --password airflow
+        --firstname admin
+        --lastname admin
+        --role Admin
+        --email admin@example.com &&
+      airflow webserver
+      "
