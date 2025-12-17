@@ -1,5 +1,8 @@
 from airflow.decorators import dag, task
 from datetime import datetime
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 @dag(
@@ -14,7 +17,7 @@ def creator_metric_length_check():
 
     @task
     def check_length():
-        print("Hello Airflow 3!")
+        logger.info("Hello Airflow 3!")
         return "Hello Airflow 3!"
 
     check_length()

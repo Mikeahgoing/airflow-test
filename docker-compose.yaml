@@ -1,25 +1,17 @@
-version: "3.9"
-
 services:
   airflow:
     image: apache/airflow:3.0.6
     container_name: airflow-local
     ports:
-      - "8080:8080"
+      - "8080:8080" # Web UI
+      - "8081:8081" # API Server (Airflow 3 新增)
     environment:
-      AIRFLOW__CORE__EXECUTOR: SequentialExecutor
-      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+      - AIRFLOW__CORE__EXECUTOR=SequentialExecutor
+      - AIRFLOW__CORE__LOAD_EXAMPLES=false
+      # 设置默认登录密码，方便直接使用
+      - _AIRFLOW_WWW_USER_USERNAME=airflow
+      - _AIRFLOW_WWW_USER_PASSWORD=airflow
     volumes:
       - ./dags:/opt/airflow/dags
-    command: >
-      bash -c "
-      airflow db migrate &&
-      airflow users create
-        --username airflow
-        --password airflow
-        --firstname admin
-        --lastname admin
-        --role Admin
-        --email admin@example.com &&
-      airflow webserver
-      "
+    # standalone 会同时启动 Webserver, Scheduler 和 API Server
+    command: standalone
