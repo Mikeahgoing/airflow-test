@@ -1,26 +1,22 @@
-from airflow import DAG
-from airflow.operators.python import PythonOperator
+from airflow.decorators import dag
 from datetime import datetime
 
-# Function to run
 
-
-def hello_airflow():
-    print("Hello Airflow 3!")
-
-
-# Define the DAG
-with DAG(
-    dag_id="hello_airflow_3",
-    start_date=datetime(2025, 8, 16),
-    schedule="@daily",
+@dag(
+    dag_id="creator_metric_length_check",
+    schedule_interval="0 10 * * *",
+    max_active_runs=1,
     catchup=False,
-    tags=["example"],
-) as dag:
+    tags=["mike"],
+    start_date=datetime(2025, 12, 16),
+)
+def creator_metric_length_check():
 
-    t1 = PythonOperator(
-        task_id="say_hello",
-        python_callable=hello_airflow
-    )
+    @task
+    def check_length():
+        print("Hello Airflow 3!")
 
-    t1
+    check_length()
+
+
+creator_metric_length_check_dag = creator_metric_length_check()
