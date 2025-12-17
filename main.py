@@ -1,10 +1,10 @@
-from airflow.decorators import dag
+from airflow.decorators import dag, task
 from datetime import datetime
 
 
 @dag(
     dag_id="creator_metric_length_check",
-    schedule_interval="0 10 * * *",
+    schedule="0 10 * * *",
     max_active_runs=1,
     catchup=False,
     tags=["mike"],
